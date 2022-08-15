@@ -24,23 +24,6 @@ public class SecurityConfig {
     }
 
     @Bean
-    public UserDetailsService users() {
-        UserDetails user = User.builder()
-                .username("member")
-                .password("$2a$10$HU83Z.W9UHhopvMcUW2K2.OOIfcYZwciygs1iFB4aRG6mPh0ez6ta")
-                .roles("USER")
-                .build();
-
-        UserDetails admin = User.builder()
-                .username("admin")
-                .password("$2a$10$HU83Z.W9UHhopvMcUW2K2.OOIfcYZwciygs1iFB4aRG6mPh0ez6ta")
-                .roles("USER", "ADMIN")
-                .build();
-
-        return new InMemoryUserDetailsManager(user, admin);
-    }
-
-    @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http
                 .authorizeRequests()
@@ -56,4 +39,21 @@ public class SecurityConfig {
 
         return http.build();
     }
+
+//    @Bean
+//    public UserDetailsService users() {
+//        UserDetails user = User.builder()
+//                .username("member")
+//                .password("$2a$10$HU83Z.W9UHhopvMcUW2K2.OOIfcYZwciygs1iFB4aRG6mPh0ez6ta")
+//                .roles("USER")
+//                .build();
+//
+//        UserDetails admin = User.builder()
+//                .username("admin")
+//                .password("$2a$10$HU83Z.W9UHhopvMcUW2K2.OOIfcYZwciygs1iFB4aRG6mPh0ez6ta")
+//                .roles("USER", "ADMIN")
+//                .build();
+//
+//        return new InMemoryUserDetailsManager(user, admin);
+//    }
 }
