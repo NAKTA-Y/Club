@@ -33,6 +33,8 @@ public class SecurityConfig {
                     .and()
                 .formLogin()
                     .and()
+                .oauth2Login()
+                    .and()
                 .logout()
                     .and()
                 .csrf().disable();
