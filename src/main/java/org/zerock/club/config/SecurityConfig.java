@@ -1,6 +1,7 @@
 package org.zerock.club.config;
 
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,11 +13,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.zerock.club.security.handler.ClubLoginSuccessHandler;
+import org.zerock.club.security.service.ClubUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
 @Log4j2
 public class SecurityConfig {
+
+    @Autowired private ClubUserDetailsService userDetailsService;
 
     @Bean
     PasswordEncoder passwordEncoder() {
@@ -33,13 +38,20 @@ public class SecurityConfig {
                     .and()
                 .formLogin()
                     .and()
-                .oauth2Login()
+                .oauth2Login().successHandler(successHandler())
+                    .and()
+                .rememberMe().tokenValiditySeconds(60*60*24*7)
                     .and()
                 .logout()
                     .and()
                 .csrf().disable();
 
         return http.build();
+    }
+
+    @Bean
+    public ClubLoginSuccessHandler successHandler() {
+        return new ClubLoginSuccessHandler(passwordEncoder());
     }
 
 //    @Bean
